@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # My New Project
 
 A new Streamlit application for your next great idea!
@@ -35,3 +36,7 @@ streamlit run app.py
 4. Deploy and share
 
 Happy coding! 🎉
+=======
+# concierge.com
+App to create a family office
+>>>>>>> 080095739c1ae3453af89b1d9840ebf08df8d1bb
