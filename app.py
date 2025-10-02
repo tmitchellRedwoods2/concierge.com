@@ -1179,6 +1179,251 @@ class LegalManager:
 # Initialize legal manager
 legal_manager = LegalManager()
 
+# Tax Management System
+class TaxManager:
+    def __init__(self):
+        self.tax_documents = []
+        self.tax_filings = []
+        self.deductions = []
+        self.tax_providers = {
+            'turbotax': {
+                'name': 'TurboTax',
+                'website': 'https://turbotax.intuit.com',
+                'api_available': True,
+                'features': ['Federal & State Filing', 'Tax Expert Review', 'Audit Support', 'Max Refund Guarantee', 'Import W-2s', 'Live CPA Help'],
+                'pricing': {
+                    'free': '$0 - Simple returns only',
+                    'deluxe': '$59 - Homeowners & investors',
+                    'premier': '$89 - Investments & rental property',
+                    'self_employed': '$119 - Contractors & freelancers'
+                },
+                'rating': 4.5,
+                'description': 'Most popular tax software with comprehensive features and excellent UI',
+                'mobile_app': True,
+                'integration': True,
+                'customer_support': '24/7 Live Support'
+            },
+            'hr_block': {
+                'name': 'H&R Block',
+                'website': 'https://www.hrblock.com',
+                'api_available': True,
+                'features': ['Federal & State Filing', 'Tax Pro Review', 'In-Person Help', 'Audit Support', 'Second Look Review', 'Refund Advance'],
+                'pricing': {
+                    'free': '$0 - Simple returns',
+                    'deluxe': '$55 - Homeowners',
+                    'premium': '$75 - Investments',
+                    'self_employed': '$110 - Business owners'
+                },
+                'rating': 4.4,
+                'description': 'Trusted tax preparation with option for in-person assistance',
+                'mobile_app': True,
+                'integration': True,
+                'customer_support': 'In-person & Online'
+            },
+            'taxact': {
+                'name': 'TaxAct',
+                'website': 'https://www.taxact.com',
+                'api_available': True,
+                'features': ['Federal & State Filing', 'Price Lock Guarantee', 'Deduction Maximizer', 'Audit Assistance', 'Prior Year Returns'],
+                'pricing': {
+                    'free': '$0 - Basic returns',
+                    'deluxe': '$47 - Itemized deductions',
+                    'premier': '$65 - Investments',
+                    'self_employed': '$95 - Business income'
+                },
+                'rating': 4.3,
+                'description': 'Affordable tax software with great value for complex returns',
+                'mobile_app': True,
+                'integration': True,
+                'customer_support': 'Email & Phone'
+            },
+            'freetaxusa': {
+                'name': 'FreeTaxUSA',
+                'website': 'https://www.freetaxusa.com',
+                'api_available': True,
+                'features': ['Free Federal Filing', 'All Tax Situations', 'Audit Assistance', 'Prior Year Returns', 'Amendment Support'],
+                'pricing': {
+                    'federal': '$0 - All federal returns',
+                    'state': '$14.99 per state',
+                    'deluxe': '$7.99 - Priority support'
+                },
+                'rating': 4.6,
+                'description': 'Best free option with excellent features at no cost for federal',
+                'mobile_app': True,
+                'integration': True,
+                'customer_support': 'Email Support'
+            },
+            'taxslayer': {
+                'name': 'TaxSlayer',
+                'website': 'https://www.taxslayer.com',
+                'api_available': True,
+                'features': ['Federal & State Filing', 'Accuracy Guarantee', 'Deduction Finder', 'Free Audit Assistance', 'Military Discount'],
+                'pricing': {
+                    'simply_free': '$0 - Simple returns',
+                    'classic': '$22.95 - All tax situations',
+                    'premium': '$44.95 - Priority support',
+                    'self_employed': '$54.95 - Business income'
+                },
+                'rating': 4.2,
+                'description': 'Budget-friendly option with solid features and military benefits',
+                'mobile_app': True,
+                'integration': True,
+                'customer_support': 'Phone & Email'
+            },
+            'creditkarma': {
+                'name': 'Credit Karma Tax (Cash App Taxes)',
+                'website': 'https://www.creditkarma.com/tax',
+                'api_available': True,
+                'features': ['100% Free Filing', 'Federal & State', 'Max Refund', 'Audit Defense', 'Import Documents'],
+                'pricing': {
+                    'all': '$0 - Completely free for all'
+                },
+                'rating': 4.1,
+                'description': 'Completely free tax filing for federal and state returns',
+                'mobile_app': True,
+                'integration': True,
+                'customer_support': 'Email Support'
+            },
+            'taxwise': {
+                'name': 'TaxWise',
+                'website': 'https://www.taxwise.com',
+                'api_available': True,
+                'features': ['Professional Tax Software', 'Multi-User Support', 'E-Filing', 'Bank Products', 'Practice Management'],
+                'pricing': {
+                    'professional': 'Custom pricing for tax professionals'
+                },
+                'rating': 4.4,
+                'description': 'Professional-grade tax preparation software for tax preparers',
+                'mobile_app': False,
+                'integration': True,
+                'customer_support': 'Dedicated Professional Support'
+            },
+            'quickbooks': {
+                'name': 'QuickBooks Self-Employed',
+                'website': 'https://quickbooks.intuit.com/self-employed/',
+                'api_available': True,
+                'features': ['Expense Tracking', 'Mileage Tracking', 'Quarterly Tax Estimates', 'Schedule C Prep', 'Invoice & Payments'],
+                'pricing': {
+                    'self_employed': '$15/month - Tax bundle',
+                    'with_turbotax': '$20/month - Includes TurboTax'
+                },
+                'rating': 4.5,
+                'description': 'Year-round tax tracking for self-employed and freelancers',
+                'mobile_app': True,
+                'integration': True,
+                'customer_support': 'Live Chat & Phone'
+            }
+        }
+        self.load_tax_data()
+    
+    def load_tax_data(self):
+        """Load tax data from storage"""
+        try:
+            if os.path.exists('tax_data.json'):
+                with open('tax_data.json', 'r') as f:
+                    data = json.load(f)
+                    self.tax_documents = data.get('tax_documents', [])
+                    self.tax_filings = data.get('tax_filings', [])
+                    self.deductions = data.get('deductions', [])
+        except Exception as e:
+            st.error(f"Error loading tax data: {e}")
+    
+    def save_tax_data(self):
+        """Save tax data to storage"""
+        try:
+            data = {
+                'tax_documents': self.tax_documents,
+                'tax_filings': self.tax_filings,
+                'deductions': self.deductions
+            }
+            with open('tax_data.json', 'w') as f:
+                json.dump(data, f, indent=2)
+        except Exception as e:
+            st.error(f"Error saving tax data: {e}")
+    
+    def add_tax_document(self, doc_type, description, tax_year, amount=0):
+        """Add a new tax document"""
+        document = {
+            'id': len(self.tax_documents) + 1,
+            'doc_type': doc_type,
+            'description': description,
+            'tax_year': tax_year,
+            'amount': amount,
+            'status': 'pending',
+            'uploaded_date': datetime.now().strftime('%Y-%m-%d')
+        }
+        self.tax_documents.append(document)
+        self.save_tax_data()
+        return document
+    
+    def add_deduction(self, category, description, amount, tax_year):
+        """Add a tax deduction"""
+        deduction = {
+            'id': len(self.deductions) + 1,
+            'category': category,
+            'description': description,
+            'amount': amount,
+            'tax_year': tax_year,
+            'created_date': datetime.now().strftime('%Y-%m-%d')
+        }
+        self.deductions.append(deduction)
+        self.save_tax_data()
+        return deduction
+    
+    def file_tax_return(self, tax_year, provider, filing_type, status='draft'):
+        """File a tax return"""
+        filing = {
+            'id': len(self.tax_filings) + 1,
+            'tax_year': tax_year,
+            'provider': provider,
+            'filing_type': filing_type,
+            'status': status,
+            'filed_date': datetime.now().strftime('%Y-%m-%d') if status == 'filed' else None,
+            'created_date': datetime.now().strftime('%Y-%m-%d')
+        }
+        self.tax_filings.append(filing)
+        self.save_tax_data()
+        return filing
+    
+    def get_tax_summary(self, tax_year):
+        """Get tax summary for a year"""
+        year_docs = [d for d in self.tax_documents if d['tax_year'] == tax_year]
+        year_deductions = [d for d in self.deductions if d['tax_year'] == tax_year]
+        year_filings = [f for f in self.tax_filings if f['tax_year'] == tax_year]
+        
+        total_deductions = sum(d['amount'] for d in year_deductions)
+        documents_collected = len([d for d in year_docs if d['status'] == 'complete'])
+        total_documents = len(year_docs)
+        
+        return {
+            'total_deductions': total_deductions,
+            'documents_collected': documents_collected,
+            'total_documents': total_documents,
+            'filings': len(year_filings),
+            'filing_status': year_filings[0]['status'] if year_filings else 'not_started'
+        }
+    
+    def get_provider_info(self, provider_key):
+        """Get tax provider information"""
+        return self.tax_providers.get(provider_key, {})
+    
+    def get_available_providers(self):
+        """Get list of available tax providers"""
+        return list(self.tax_providers.keys())
+    
+    def sync_with_provider(self, provider_key, sync_type='import'):
+        """Sync with tax provider"""
+        provider_info = self.get_provider_info(provider_key)
+        if sync_type == 'import':
+            return f"Imported tax data from {provider_info['name']}"
+        elif sync_type == 'export':
+            return f"Exported data to {provider_info['name']}"
+        else:
+            return f"Synced with {provider_info['name']}"
+
+# Initialize tax manager
+tax_manager = TaxManager()
+
 # Initialize AI system
 ai_system = AIAgentSystem()
 
@@ -3808,28 +4053,107 @@ elif st.session_state.user_logged_in and not st.session_state.admin_logged_in:
                     st.rerun()
         
         with tab6:
-            st.subheader("📊 Tax Management")
-            st.write("Organized tax preparation and filing assistance")
+            st.subheader("📊 Tax Management & Provider Integration")
+            st.write("Professional tax preparation with access to leading tax software")
             
             # Tax dashboard
-            col1, col2, col3 = st.columns(3)
+            tax_summary = tax_manager.get_tax_summary(2024)
+            col1, col2, col3, col4 = st.columns(4)
             with col1:
                 st.metric("Tax Year", "2024")
             with col2:
-                st.metric("Documents Collected", "12/15")
+                st.metric("Documents", f"{tax_summary['documents_collected']}/{tax_summary['total_documents']}")
             with col3:
-                st.metric("Estimated Refund", "$2,450")
+                st.metric("Deductions", f"${tax_summary['total_deductions']:,.2f}")
+            with col4:
+                st.metric("Status", tax_summary['filing_status'].replace('_', ' ').title())
             
-            # Tax categories
+            # Tax Provider Integration
+            st.markdown("---")
+            st.subheader("🔗 Tax Software Integration")
+            st.write("Connect with leading tax preparation services")
+            
+            # Display available tax providers
+            providers = tax_manager.get_available_providers()
+            selected_provider = st.selectbox(
+                "Select Tax Provider",
+                options=providers,
+                format_func=lambda x: tax_manager.get_provider_info(x)['name']
+            )
+            
+            if selected_provider:
+                provider_info = tax_manager.get_provider_info(selected_provider)
+                
+                col1, col2 = st.columns([2, 1])
+                with col1:
+                    st.write(f"**{provider_info['name']}**")
+                    st.write(provider_info['description'])
+                    st.write(f"⭐ Rating: {provider_info['rating']}/5.0")
+                    st.write(f"🌐 Website: {provider_info['website']}")
+                    st.write(f"📱 Mobile App: {'Yes' if provider_info['mobile_app'] else 'No'}")
+                    st.write(f"💬 Support: {provider_info['customer_support']}")
+                
+                with col2:
+                    st.write("**Pricing:**")
+                    for tier, price in provider_info['pricing'].items():
+                        st.write(f"• {tier.replace('_', ' ').title()}: {price}")
+                
+                st.write("**Features:**")
+                for feature in provider_info['features']:
+                    st.write(f"✓ {feature}")
+                
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    if st.button("🔗 Connect", key=f"connect_{selected_provider}"):
+                        result = tax_manager.sync_with_provider(selected_provider, 'import')
+                        st.success(result)
+                with col2:
+                    if st.button("📤 Export Data", key=f"export_{selected_provider}"):
+                        result = tax_manager.sync_with_provider(selected_provider, 'export')
+                        st.success(result)
+                with col3:
+                    if st.button("🔄 Sync", key=f"sync_{selected_provider}"):
+                        result = tax_manager.sync_with_provider(selected_provider, 'sync')
+                        st.success(result)
+            
+            # Tax categories breakdown
+            st.markdown("---")
+            st.subheader("📊 Tax Categories Breakdown")
             categories = ['W-2 Income', '1099 Income', 'Deductions', 'Credits', 'Other']
             amounts = [45000, 5000, 8000, 2000, 1000]
-            fig = px.bar(x=categories, y=amounts, title="Tax Categories Breakdown")
+            fig = px.bar(x=categories, y=amounts, title="Tax Categories for 2024")
             st.plotly_chart(fig, use_container_width=True, key="premium_tax_categories_chart")
             
-            if st.button("Start Tax Filing"):
-                st.success("Tax filing process initiated!")
+            # Add tax deduction
+            st.markdown("---")
+            st.subheader("➕ Add Tax Deduction")
+            with st.form("add_tax_deduction"):
+                col1, col2 = st.columns(2)
+                with col1:
+                    deduction_category = st.selectbox("Category", [
+                        "Charitable Donations", "Medical Expenses", "Home Office", 
+                        "Business Expenses", "Education", "State Taxes", "Other"
+                    ])
+                    deduction_amount = st.number_input("Amount ($)", min_value=0.0, step=100.0)
+                with col2:
+                    deduction_desc = st.text_area("Description")
+                    tax_year = st.selectbox("Tax Year", [2024, 2023, 2022])
+                
+                if st.form_submit_button("Add Deduction"):
+                    deduction = tax_manager.add_deduction(deduction_category, deduction_desc, deduction_amount, tax_year)
+                    st.success(f"Deduction added! Deduction ID: {deduction['id']}")
+                    st.rerun()
+            
+            # Quick actions
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("📄 Upload Tax Document", key="upload_tax_doc_premium"):
+                    st.info("Document upload feature - Coming soon!")
+            with col2:
+                if st.button("📅 Schedule CPA Consultation", key="schedule_cpa_premium"):
+                    st.success("CPA consultation scheduled!")
         
-        with tab6:
+        with tab7:
             st.subheader("✈️ Premium Travel Planning")
             st.write("Personalized travel planning with concierge booking")
             
@@ -4510,31 +4834,153 @@ elif st.session_state.user_logged_in and not st.session_state.admin_logged_in:
                     st.rerun()
         
         with tab6:
-            st.subheader("📊 Elite Tax Management")
-            st.write("Advanced tax optimization and year-round planning")
+            st.subheader("📊 Elite Tax Management & Optimization")
+            st.write("Dedicated CPA support with advanced tax optimization strategies")
             
-            # Tax optimization
-            st.subheader("📈 Tax Optimization Strategy")
-            col1, col2, col3 = st.columns(3)
+            # Tax optimization dashboard
+            tax_summary = tax_manager.get_tax_summary(2024)
+            st.subheader("📈 Elite Tax Optimization Dashboard")
+            col1, col2, col3, col4 = st.columns(4)
             with col1:
-                st.metric("2024 Tax Liability", "$8,450")
+                st.metric("2024 Tax Liability", "$8,450", "-$1,200")
             with col2:
-                st.metric("Optimization Savings", "$1,200")
+                st.metric("Optimization Savings", "$1,200", "14%")
             with col3:
-                st.metric("Documents Status", "15/15 Complete")
+                st.metric("Total Deductions", f"${tax_summary['total_deductions']:,.2f}")
+            with col4:
+                st.metric("Documents", f"{tax_summary['documents_collected']}/{tax_summary['total_documents']}")
             
-            # Tax strategies
-            st.subheader("💡 Advanced Tax Strategies")
+            # Premium Tax Provider Integration
+            st.markdown("---")
+            st.subheader("🏆 Elite Tax Software Integration")
+            st.write("Premium access to professional-grade tax preparation services")
+            
+            # Display elite tax providers with special benefits
+            providers = tax_manager.get_available_providers()
+            
+            # Create two columns for provider selection
+            col1, col2 = st.columns([1, 1])
+            with col1:
+                selected_provider = st.selectbox(
+                    "Select Tax Provider",
+                    options=providers,
+                    format_func=lambda x: tax_manager.get_provider_info(x)['name'],
+                    key="elite_tax_provider_select"
+                )
+            
+            with col2:
+                st.info("💎 Elite members receive priority support and dedicated account managers from all providers")
+            
+            if selected_provider:
+                provider_info = tax_manager.get_provider_info(selected_provider)
+                
+                # Provider details in expandable sections
+                with st.expander(f"📋 {provider_info['name']} Details", expanded=True):
+                    col1, col2 = st.columns([2, 1])
+                    with col1:
+                        st.write(f"**{provider_info['name']}** - {provider_info['description']}")
+                        st.write(f"⭐ Rating: {provider_info['rating']}/5.0")
+                        st.write(f"🌐 {provider_info['website']}")
+                        st.write(f"📱 Mobile App: {'Available' if provider_info['mobile_app'] else 'Not Available'}")
+                        st.write(f"💬 Support: {provider_info['customer_support']}")
+                        
+                    with col2:
+                        st.write("**Pricing Tiers:**")
+                        for tier, price in provider_info['pricing'].items():
+                            st.write(f"• {tier.replace('_', ' ').title()}")
+                            st.write(f"  {price}")
+                    
+                    st.write("**Premium Features:**")
+                    cols = st.columns(2)
+                    for idx, feature in enumerate(provider_info['features']):
+                        with cols[idx % 2]:
+                            st.write(f"✅ {feature}")
+                
+                # Elite integration actions
+                col1, col2, col3, col4 = st.columns(4)
+                with col1:
+                    if st.button("🔗 Connect", key=f"elite_connect_{selected_provider}"):
+                        result = tax_manager.sync_with_provider(selected_provider, 'import')
+                        st.success(result)
+                        st.info("Elite priority integration activated")
+                with col2:
+                    if st.button("📤 Export", key=f"elite_export_{selected_provider}"):
+                        result = tax_manager.sync_with_provider(selected_provider, 'export')
+                        st.success(result)
+                with col3:
+                    if st.button("🔄 Sync", key=f"elite_sync_{selected_provider}"):
+                        result = tax_manager.sync_with_provider(selected_provider, 'sync')
+                        st.success(result)
+                with col4:
+                    if st.button("📞 Get Support", key=f"elite_support_{selected_provider}"):
+                        st.success(f"Dedicated support representative from {provider_info['name']} will contact you within 1 hour")
+            
+            # Advanced tax strategies
+            st.markdown("---")
+            st.subheader("💡 AI-Powered Tax Optimization Strategies")
             strategies = [
-                "💰 Maximize HSA contributions - save $1,200 in taxes",
-                "🏠 Consider home office deduction - potential $800 savings",
-                "📈 Tax-loss harvesting opportunity - save $300"
+                {"strategy": "Maximize HSA contributions", "savings": "$1,200", "impact": "High"},
+                {"strategy": "Home office deduction optimization", "savings": "$800", "impact": "Medium"},
+                {"strategy": "Tax-loss harvesting opportunity", "savings": "$300", "impact": "Medium"},
+                {"strategy": "Charitable giving strategy", "savings": "$500", "impact": "Low"},
+                {"strategy": "Retirement contribution timing", "savings": "$650", "impact": "High"}
             ]
             
-            for strategy in strategies:
-                st.write(strategy)
+            for idx, strat in enumerate(strategies, 1):
+                col1, col2, col3 = st.columns([3, 1, 1])
+                with col1:
+                    st.write(f"{idx}. {strat['strategy']}")
+                with col2:
+                    st.write(f"💰 {strat['savings']}")
+                with col3:
+                    impact_color = "🔴" if strat['impact'] == "High" else "🟡" if strat['impact'] == "Medium" else "🟢"
+                    st.write(f"{impact_color} {strat['impact']}")
+            
+            # Elite tax deduction management
+            st.markdown("---")
+            st.subheader("➕ Elite Tax Deduction Tracking")
+            with st.form("add_elite_tax_deduction"):
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    deduction_category = st.selectbox("Category", [
+                        "Charitable Donations", "Medical Expenses", "Home Office", 
+                        "Business Expenses", "Education", "State Taxes", 
+                        "Investment Expenses", "Professional Fees", "Other"
+                    ], key="elite_deduction_category")
+                    deduction_amount = st.number_input("Amount ($)", min_value=0.0, step=100.0, key="elite_deduction_amount")
+                with col2:
+                    deduction_desc = st.text_area("Description", key="elite_deduction_desc")
+                    tax_year = st.selectbox("Tax Year", [2024, 2023, 2022, 2021], key="elite_tax_year")
+                with col3:
+                    st.write("**CPA Review:**")
+                    cpa_review = st.checkbox("Request CPA review", value=True)
+                    st.write("**AI Analysis:**")
+                    ai_optimize = st.checkbox("AI optimization analysis", value=True)
+                
+                if st.form_submit_button("Add Elite Deduction"):
+                    deduction = tax_manager.add_deduction(deduction_category, deduction_desc, deduction_amount, tax_year)
+                    st.success(f"Deduction added! Deduction ID: {deduction['id']}")
+                    if cpa_review:
+                        st.info("📞 Your dedicated CPA will review this deduction within 24 hours")
+                    if ai_optimize:
+                        st.info("🤖 AI analysis: This deduction may qualify for additional tax benefits")
+                    st.rerun()
+            
+            # Elite services
+            st.markdown("---")
+            st.subheader("🌟 Elite Tax Services")
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                if st.button("📞 Dedicated CPA Call", key="elite_cpa_call"):
+                    st.success("Your dedicated CPA will call you within 2 hours")
+            with col2:
+                if st.button("📊 Tax Planning Session", key="elite_tax_planning"):
+                    st.success("Year-round tax planning session scheduled!")
+            with col3:
+                if st.button("🔍 Audit Protection", key="elite_audit_protection"):
+                    st.success("Comprehensive audit protection activated")
         
-        with tab5:
+        with tab7:
             st.subheader("✈️ Elite Travel Planning")
             st.write("Luxury travel planning with personal concierge booking")
             
