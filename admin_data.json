@@ -1,0 +1,10 @@
+{
+  "user_sessions": [],
+  "system_metrics": {
+    "total_users": 0,
+    "active_sessions": 11,
+    "messages_sent": 0,
+    "prescriptions_managed": 0,
+    "ai_tasks_completed": 0
+  }
+}
