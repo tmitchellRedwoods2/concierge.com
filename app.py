@@ -31,8 +31,6 @@ if 'intake_step' not in st.session_state:
     st.session_state.intake_step = 1
 if 'intake_data' not in st.session_state:
     st.session_state.intake_data = {}
-if 'show_intake' not in st.session_state:
-    st.session_state.show_intake = False
 
 # AI Agent System for Concierge Scaling
 class AIAgentSystem:
@@ -2427,352 +2425,337 @@ else:
     pass
 
 # Main App Logic
-if not st.session_state.user_logged_in and not st.session_state.admin_logged_in and not st.session_state.show_intake:
+if not st.session_state.user_logged_in and not st.session_state.admin_logged_in:
     # Login/Signup Page
     st.title("🏆 Concierge.com")
     st.subheader("Your Personal Life Management Platform")
     st.markdown("**Making your life easier, one service at a time**")
     
-    col1, col2 = st.columns([1, 1])
+    # Create tabs for Login and Sign Up
+    tab1, tab2 = st.tabs(["🔐 Sign In", "📝 Sign Up"])
     
-    with col1:
-        st.subheader("🔐 Login")
-        username = st.text_input("Username", key="login_username")
-        password = st.text_input("Password", type="password", key="login_password")
-        if st.button("Login"):
-            if username and password:
-                login_user(username, 'premium')  # Demo: auto-login as premium
-                st.success("Login successful!")
-                st.rerun()
-            else:
-                st.error("Please enter both username and password")
-    
-    with col2:
-        st.subheader("📝 New Client Intake")
-        st.write("Let us help you find the perfect plan for your needs")
-        st.write("")
-        st.write("✨ Personalized plan recommendations")
-        st.write("💰 Custom pricing based on your needs")
-        st.write("🎯 Professional onboarding experience")
-        st.write("")
-        if st.button("🚀 Start Client Intake Process", use_container_width=True, type="primary"):
-            st.session_state.show_intake = True
-            st.session_state.intake_step = 1
-            st.rerun()
-
-# Client Intake Flow
-if st.session_state.show_intake and not st.session_state.user_logged_in:
-    st.title("🎯 Welcome to Concierge.com - Client Intake")
-    
-    # Progress bar
-    progress = (st.session_state.intake_step - 1) / 4
-    st.progress(progress)
-    st.write(f"**Step {st.session_state.intake_step} of 5**")
-    st.markdown("---")
-    
-    # Initialize session state for intake data
-    if 'intake_data' not in st.session_state:
-        st.session_state.intake_data = {}
-    
-    # Step 1: Personal Information
-    if st.session_state.intake_step == 1:
-        st.subheader("👤 Personal Information")
-        st.write("Let's start with some basic information about you.")
+    with tab1:
+        st.subheader("Welcome Back!")
+        st.write("Sign in to access your dashboard")
         
-        col1, col2 = st.columns(2)
+        col1, col2 = st.columns([2, 1])
         with col1:
-            first_name = st.text_input("First Name", value=st.session_state.intake_data.get('first_name', ''), key="intake_first_name")
-            last_name = st.text_input("Last Name", value=st.session_state.intake_data.get('last_name', ''), key="intake_last_name")
-            email = st.text_input("Email Address", value=st.session_state.intake_data.get('email', ''), key="intake_email")
-        
-        with col2:
-            phone = st.text_input("Phone Number", value=st.session_state.intake_data.get('phone', ''), key="intake_phone")
-            age = st.number_input("Age", min_value=18, max_value=100, value=st.session_state.intake_data.get('age', 30), key="intake_age")
-            location = st.text_input("City, State", value=st.session_state.intake_data.get('location', ''), key="intake_location")
-        
-        st.markdown("---")
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("← Back to Login", use_container_width=True):
-                st.session_state.show_intake = False
-                st.session_state.intake_step = 1
-                st.rerun()
-        
-        with col2:
-            if st.button("Next →", use_container_width=True, type="primary"):
-                if first_name and last_name and email and phone and location:
-                    st.session_state.intake_data.update({
-                        'first_name': first_name,
-                        'last_name': last_name,
-                        'email': email,
-                        'phone': phone,
-                        'age': age,
-                        'location': location
-                    })
-                    st.session_state.intake_step = 2
+            username = st.text_input("Username", key="login_username")
+            password = st.text_input("Password", type="password", key="login_password")
+            
+            if st.button("🔐 Sign In", use_container_width=True, type="primary"):
+                if username and password:
+                    login_user(username, 'premium')  # Demo: auto-login as premium
+                    st.success("Login successful!")
                     st.rerun()
+                else:
+                    st.error("Please enter both username and password")
+        
+        with col2:
+            st.markdown("**Demo Credentials:**")
+            st.code("Username: demo\nPassword: demo123")
+            st.markdown("*Use any credentials for demo*")
+    
+    with tab2:
+        st.subheader("Join Concierge.com")
+        st.write("Create your account and get personalized recommendations")
+        
+        # Initialize session state for signup data
+        if 'signup_data' not in st.session_state:
+            st.session_state.signup_data = {}
+        
+        # Step indicator
+        if 'signup_step' not in st.session_state:
+            st.session_state.signup_step = 1
+        
+        # Progress bar
+        progress = (st.session_state.signup_step - 1) / 4
+        st.progress(progress)
+        st.write(f"**Step {st.session_state.signup_step} of 5**")
+        st.markdown("---")
+        
+        # Step 1: Account Information
+        if st.session_state.signup_step == 1:
+            st.markdown("**Step 1: Account Information**")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                username = st.text_input("Choose Username", value=st.session_state.signup_data.get('username', ''), key="signup_username")
+                email = st.text_input("Email Address", value=st.session_state.signup_data.get('email', ''), key="signup_email")
+                password = st.text_input("Create Password", type="password", value=st.session_state.signup_data.get('password', ''), key="signup_password")
+            
+            with col2:
+                first_name = st.text_input("First Name", value=st.session_state.signup_data.get('first_name', ''), key="signup_firstname")
+                last_name = st.text_input("Last Name", value=st.session_state.signup_data.get('last_name', ''), key="signup_lastname")
+                confirm_password = st.text_input("Confirm Password", type="password", key="signup_confirm")
+            
+            if st.button("Next →", use_container_width=True, type="primary"):
+                if all([username, email, password, first_name, last_name]):
+                    if password == confirm_password:
+                        st.session_state.signup_data.update({
+                            'username': username,
+                            'email': email,
+                            'password': password,
+                            'first_name': first_name,
+                            'last_name': last_name
+                        })
+                        st.session_state.signup_step = 2
+                        st.rerun()
+                    else:
+                        st.error("Passwords do not match")
                 else:
                     st.error("Please fill in all required fields")
-    
-    # Step 2: Financial Profile
-    elif st.session_state.intake_step == 2:
-        st.subheader("💰 Financial Profile")
-        st.write("Help us understand your financial situation to recommend the best plan.")
         
-        col1, col2 = st.columns(2)
-        with col1:
-            net_worth = st.number_input(
-                "Estimated Net Worth ($)", 
-                min_value=0, 
-                step=10000, 
-                value=st.session_state.intake_data.get('net_worth', 100000),
-                key="intake_net_worth"
+        # Step 2: Financial Profile
+        elif st.session_state.signup_step == 2:
+            st.markdown("**Step 2: Financial Profile**")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                net_worth = st.number_input(
+                    "Estimated Net Worth ($)", 
+                    min_value=0, 
+                    step=10000, 
+                    value=st.session_state.signup_data.get('net_worth', 100000),
+                    key="signup_net_worth"
+                )
+                annual_income = st.number_input(
+                    "Annual Income ($)", 
+                    min_value=0, 
+                    step=10000, 
+                    value=st.session_state.signup_data.get('annual_income', 50000),
+                    key="signup_annual_income"
+                )
+            
+            with col2:
+                employment_status = st.selectbox(
+                    "Employment Status",
+                    ["Employed", "Self-Employed", "Retired", "Student", "Unemployed", "Other"],
+                    index=["Employed", "Self-Employed", "Retired", "Student", "Unemployed", "Other"].index(
+                        st.session_state.signup_data.get('employment_status', 'Employed')
+                    ),
+                    key="signup_employment"
+                )
+                family_size = st.number_input(
+                    "Family Size", 
+                    min_value=1, 
+                    max_value=20, 
+                    value=st.session_state.signup_data.get('family_size', 1),
+                    key="signup_family_size"
+                )
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("← Previous", use_container_width=True):
+                    st.session_state.signup_step = 1
+                    st.rerun()
+            
+            with col2:
+                if st.button("Next →", use_container_width=True, type="primary"):
+                    st.session_state.signup_data.update({
+                        'net_worth': net_worth,
+                        'annual_income': annual_income,
+                        'employment_status': employment_status,
+                        'family_size': family_size
+                    })
+                    st.session_state.signup_step = 3
+                    st.rerun()
+        
+        # Step 3: Goals and Objectives
+        elif st.session_state.signup_step == 3:
+            st.markdown("**Step 3: Goals and Objectives**")
+            
+            goals = st.multiselect(
+                "Select your primary goals (choose all that apply):",
+                [
+                    "Health and Wellness Management",
+                    "Wealth Management and Investment",
+                    "Tax Optimization",
+                    "Legal Planning and Protection",
+                    "Insurance Management",
+                    "Expense Tracking and Budgeting",
+                    "Business Management",
+                    "Estate Planning",
+                    "Retirement Planning",
+                    "Family Planning",
+                    "Travel and Lifestyle",
+                    "Personal Development"
+                ],
+                default=st.session_state.signup_data.get('goals', []),
+                key="signup_goals"
             )
-            annual_income = st.number_input(
-                "Annual Income ($)", 
-                min_value=0, 
-                step=10000, 
-                value=st.session_state.intake_data.get('annual_income', 50000),
-                key="intake_annual_income"
+            
+            st.text_area(
+                "Additional goals or specific needs:",
+                value=st.session_state.signup_data.get('additional_goals', ''),
+                height=100,
+                key="signup_additional_goals"
             )
-        
-        with col2:
-            employment_status = st.selectbox(
-                "Employment Status",
-                ["Employed", "Self-Employed", "Retired", "Student", "Unemployed", "Other"],
-                index=["Employed", "Self-Employed", "Retired", "Student", "Unemployed", "Other"].index(
-                    st.session_state.intake_data.get('employment_status', 'Employed')
-                ),
-                key="intake_employment"
+            
+            priority_level = st.select_slider(
+                "How important is having a dedicated concierge service?",
+                options=["Low", "Medium", "High", "Critical"],
+                value=st.session_state.signup_data.get('priority_level', 'Medium'),
+                key="signup_priority"
             )
-            family_size = st.number_input(
-                "Family Size", 
-                min_value=1, 
-                max_value=20, 
-                value=st.session_state.intake_data.get('family_size', 1),
-                key="intake_family_size"
-            )
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("← Previous", use_container_width=True):
+                    st.session_state.signup_step = 2
+                    st.rerun()
+            
+            with col2:
+                if st.button("Next →", use_container_width=True, type="primary"):
+                    if goals:
+                        st.session_state.signup_data.update({
+                            'goals': goals,
+                            'additional_goals': st.session_state.signup_additional_goals,
+                            'priority_level': priority_level
+                        })
+                        st.session_state.signup_step = 4
+                        st.rerun()
+                    else:
+                        st.error("Please select at least one goal")
         
-        st.markdown("---")
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("← Previous", use_container_width=True):
-                st.session_state.intake_step = 1
-                st.rerun()
-        
-        with col2:
-            if st.button("Next →", use_container_width=True, type="primary"):
-                st.session_state.intake_data.update({
-                    'net_worth': net_worth,
-                    'annual_income': annual_income,
-                    'employment_status': employment_status,
-                    'family_size': family_size
-                })
-                st.session_state.intake_step = 3
-                st.rerun()
-    
-    # Step 3: Goals and Objectives
-    elif st.session_state.intake_step == 3:
-        st.subheader("🎯 Goals and Objectives")
-        st.write("What are you looking to achieve with our services?")
-        
-        goals = st.multiselect(
-            "Select your primary goals (choose all that apply):",
-            [
-                "Health and Wellness Management",
-                "Wealth Management and Investment",
-                "Tax Optimization",
-                "Legal Planning and Protection",
+        # Step 4: Service Selection
+        elif st.session_state.signup_step == 4:
+            st.markdown("**Step 4: Service Selection**")
+            
+            available_services = [
+                "Health Management",
+                "Investment Management", 
+                "Expense Tracking",
                 "Insurance Management",
-                "Expense Tracking and Budgeting",
-                "Business Management",
-                "Estate Planning",
-                "Retirement Planning",
-                "Family Planning",
-                "Travel and Lifestyle",
-                "Personal Development"
-            ],
-            default=st.session_state.intake_data.get('goals', []),
-            key="intake_goals"
-        )
-        
-        st.text_area(
-            "Additional goals or specific needs:",
-            value=st.session_state.intake_data.get('additional_goals', ''),
-            height=100,
-            key="intake_additional_goals"
-        )
-        
-        priority_level = st.select_slider(
-            "How important is having a dedicated concierge service?",
-            options=["Low", "Medium", "High", "Critical"],
-            value=st.session_state.intake_data.get('priority_level', 'Medium'),
-            key="intake_priority"
-        )
-        
-        st.markdown("---")
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("← Previous", use_container_width=True):
-                st.session_state.intake_step = 2
-                st.rerun()
-        
-        with col2:
-            if st.button("Next →", use_container_width=True, type="primary"):
-                if goals:
-                    st.session_state.intake_data.update({
-                        'goals': goals,
-                        'additional_goals': st.session_state.intake_additional_goals,
-                        'priority_level': priority_level
-                    })
-                    st.session_state.intake_step = 4
-                    st.rerun()
-                else:
-                    st.error("Please select at least one goal")
-    
-    # Step 4: Service Selection
-    elif st.session_state.intake_step == 4:
-        st.subheader("🔧 Service Selection")
-        st.write("Choose the services you're most interested in:")
-        
-        available_services = [
-            "Health Management",
-            "Investment Management", 
-            "Expense Tracking",
-            "Insurance Management",
-            "Legal Services",
-            "Tax Management",
-            "Travel Planning",
-            "Personal Assistant"
-        ]
-        
-        selected_services = st.multiselect(
-            "Select services (choose all that apply):",
-            available_services,
-            default=st.session_state.intake_data.get('selected_services', []),
-            key="intake_services"
-        )
-        
-        # Show service descriptions
-        st.markdown("**Service Descriptions:**")
-        service_descriptions = {
-            "Health Management": "Medical appointment scheduling, prescription management, health tracking",
-            "Investment Management": "Portfolio monitoring, investment advice, broker coordination",
-            "Expense Tracking": "Budget analysis, expense categorization, financial reporting",
-            "Insurance Management": "Policy review, claims assistance, coverage optimization",
-            "Legal Services": "Document review, legal consultation, case management",
-            "Tax Management": "Tax preparation, filing assistance, optimization strategies",
-            "Travel Planning": "Trip coordination, booking management, itinerary planning",
-            "Personal Assistant": "Daily task management, scheduling, personal errands"
-        }
-        
-        for service in selected_services:
-            st.write(f"• **{service}**: {service_descriptions.get(service, '')}")
-        
-        st.markdown("---")
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("← Previous", use_container_width=True):
-                st.session_state.intake_step = 3
-                st.rerun()
-        
-        with col2:
-            if st.button("Next →", use_container_width=True, type="primary"):
-                if selected_services:
-                    st.session_state.intake_data.update({
-                        'selected_services': selected_services
-                    })
-                    st.session_state.intake_step = 5
-                    st.rerun()
-                else:
-                    st.error("Please select at least one service")
-    
-    # Step 5: Plan Recommendation and Pricing
-    elif st.session_state.intake_step == 5:
-        st.subheader("🎯 Your Personalized Plan Recommendation")
-        
-        # Get intake data
-        intake_data = st.session_state.intake_data
-        net_worth = intake_data.get('net_worth', 0)
-        goals = intake_data.get('goals', [])
-        selected_services = intake_data.get('selected_services', [])
-        
-        # Recommend plan
-        recommended_plan, complexity_score = client_intake_manager.recommend_plan(
-            net_worth, goals, selected_services
-        )
-        
-        # Calculate pricing
-        pricing = client_intake_manager.calculate_pricing(
-            net_worth, selected_services, recommended_plan
-        )
-        
-        # Display recommendation
-        st.success(f"🎉 **Recommended Plan: {recommended_plan.title()}**")
-        st.write(f"*Based on your complexity score: {complexity_score}/10*")
-        
-        # Show plan features
-        features = client_intake_manager.get_plan_features(recommended_plan)
-        st.markdown("**Plan Features:**")
-        for feature in features:
-            st.write(feature)
-        
-        # Show pricing
-        st.markdown("**💰 Pricing:**")
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("Monthly Price", f"${pricing['monthly_price']}")
-        with col2:
-            st.metric("Annual Price", f"${pricing['annual_price']}")
-        with col3:
-            st.metric("Annual Savings", f"${pricing['annual_savings']}")
-        
-        # Pricing breakdown
-        with st.expander("📊 Pricing Breakdown"):
-            st.write(f"**Base Price:** ${pricing['base_price']}")
-            st.write(f"**Net Worth Multiplier:** {pricing['net_worth_multiplier']}x")
-            st.write(f"**Service Add-ons:** ${pricing['service_cost']}")
-            st.write(f"**Total Monthly:** ${pricing['monthly_price']}")
-            st.write(f"**Annual Discount (15%):** ${pricing['annual_savings']}")
-        
-        # Client summary
-        st.markdown("**📋 Client Summary:**")
-        st.write(f"**Name:** {intake_data.get('first_name', '')} {intake_data.get('last_name', '')}")
-        st.write(f"**Email:** {intake_data.get('email', '')}")
-        st.write(f"**Net Worth:** ${net_worth:,}")
-        st.write(f"**Goals:** {', '.join(goals)}")
-        st.write(f"**Services:** {', '.join(selected_services)}")
-        
-        st.markdown("---")
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("← Previous", use_container_width=True):
-                st.session_state.intake_step = 4
-                st.rerun()
-        
-        with col2:
-            if st.button("✅ Complete Intake", use_container_width=True, type="primary"):
-                # Save client intake
-                client = client_intake_manager.add_client(intake_data)
+                "Legal Services",
+                "Tax Management",
+                "Travel Planning",
+                "Personal Assistant"
+            ]
+            
+            selected_services = st.multiselect(
+                "Select services (choose all that apply):",
+                available_services,
+                default=st.session_state.signup_data.get('selected_services', []),
+                key="signup_services"
+            )
+            
+            # Show service descriptions
+            if selected_services:
+                st.markdown("**Selected Services:**")
+                service_descriptions = {
+                    "Health Management": "Medical appointment scheduling, prescription management, health tracking",
+                    "Investment Management": "Portfolio monitoring, investment advice, broker coordination",
+                    "Expense Tracking": "Budget analysis, expense categorization, financial reporting",
+                    "Insurance Management": "Policy review, claims assistance, coverage optimization",
+                    "Legal Services": "Document review, legal consultation, case management",
+                    "Tax Management": "Tax preparation, filing assistance, optimization strategies",
+                    "Travel Planning": "Trip coordination, booking management, itinerary planning",
+                    "Personal Assistant": "Daily task management, scheduling, personal errands"
+                }
                 
-                # Show success message
-                st.success("🎉 **Client intake completed successfully!**")
-                st.balloons()
-                
-                st.markdown("**Next Steps:**")
-                st.write("1. Our team will review your intake within 24 hours")
-                st.write("2. You'll receive a personalized welcome package")
-                st.write("3. Your dedicated concierge will contact you to begin services")
-                st.write("4. You can login anytime to track your progress")
-                
-                st.markdown("---")
-                if st.button("🏠 Back to Login", use_container_width=True):
-                    st.session_state.show_intake = False
-                    st.session_state.intake_step = 1
-                    st.session_state.intake_data = {}
+                for service in selected_services:
+                    st.write(f"• **{service}**: {service_descriptions.get(service, '')}")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("← Previous", use_container_width=True):
+                    st.session_state.signup_step = 3
                     st.rerun()
+            
+            with col2:
+                if st.button("Next →", use_container_width=True, type="primary"):
+                    if selected_services:
+                        st.session_state.signup_data.update({
+                            'selected_services': selected_services
+                        })
+                        st.session_state.signup_step = 5
+                        st.rerun()
+                    else:
+                        st.error("Please select at least one service")
+        
+        # Step 5: Plan Recommendation and Account Creation
+        elif st.session_state.signup_step == 5:
+            st.markdown("**Step 5: Your Personalized Plan & Account Creation**")
+            
+            # Get signup data
+            signup_data = st.session_state.signup_data
+            net_worth = signup_data.get('net_worth', 0)
+            goals = signup_data.get('goals', [])
+            selected_services = signup_data.get('selected_services', [])
+            
+            # Recommend plan
+            recommended_plan, complexity_score = intake_manager.recommend_plan(
+                net_worth, goals, selected_services
+            )
+            
+            # Calculate pricing
+            pricing = intake_manager.calculate_pricing(
+                net_worth, selected_services, recommended_plan
+            )
+            
+            # Display recommendation
+            st.success(f"🎉 **Recommended Plan: {recommended_plan.title()}**")
+            st.write(f"*Based on your complexity score: {complexity_score}/10*")
+            
+            # Show plan features
+            features = intake_manager.get_plan_features(recommended_plan)
+            st.markdown("**Plan Features:**")
+            for feature in features:
+                st.write(feature)
+            
+            # Show pricing
+            st.markdown("**💰 Pricing:**")
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Monthly Price", f"${pricing['monthly_price']}")
+            with col2:
+                st.metric("Annual Price", f"${pricing['annual_price']}")
+            with col3:
+                st.metric("Annual Savings", f"${pricing['annual_savings']}")
+            
+            # Account summary
+            st.markdown("**📋 Account Summary:**")
+            st.write(f"**Name:** {signup_data.get('first_name', '')} {signup_data.get('last_name', '')}")
+            st.write(f"**Email:** {signup_data.get('email', '')}")
+            st.write(f"**Username:** {signup_data.get('username', '')}")
+            st.write(f"**Net Worth:** ${net_worth:,}")
+            st.write(f"**Goals:** {', '.join(goals)}")
+            st.write(f"**Services:** {', '.join(selected_services)}")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("← Previous", use_container_width=True):
+                    st.session_state.signup_step = 4
+                    st.rerun()
+            
+            with col2:
+                if st.button("✅ Create Account & Complete Setup", use_container_width=True, type="primary"):
+                    # Save client intake data
+                    client = intake_manager.add_client(signup_data)
+                    
+                    # Create user account (demo implementation)
+                    st.success("🎉 **Account created successfully!**")
+                    st.balloons()
+                    
+                    st.markdown("**Welcome to Concierge.com!**")
+                    st.write("1. Your account has been created")
+                    st.write("2. Our team will review your intake within 24 hours")
+                    st.write("3. You'll receive a personalized welcome package")
+                    st.write("4. Your dedicated concierge will contact you to begin services")
+                    
+                    # Reset signup state
+                    st.session_state.signup_step = 1
+                    st.session_state.signup_data = {}
+                    
+                    st.markdown("---")
+                    if st.button("🔐 Sign In to Your Account", use_container_width=True):
+                        st.session_state.signup_step = 1
+                        st.session_state.signup_data = {}
+                        st.rerun()
 
-elif st.session_state.user_logged_in and not st.session_state.admin_logged_in and not st.session_state.show_intake:
+
+elif st.session_state.user_logged_in and not st.session_state.admin_logged_in:
     # Main Dashboard
     username = st.session_state.user_data.get('username', 'User')
     st.title(f"🚀 Welcome back, {username}!")
@@ -5744,6 +5727,6 @@ st.markdown("---")
 st.markdown("**Concierge.com** - Your Personal Life Management Platform | [Upgrade Plan](mailto:support@concierge.com) | [Support](mailto:help@concierge.com)")
 
 # Hidden admin access for internal staff (only visible in development)
-if (st.session_state.get('admin_logged_in', False) or st.query_params.get("debug", None) == "true") and not st.session_state.show_intake:
+if st.session_state.get('admin_logged_in', False) or st.query_params.get("debug", None) == "true":
     st.markdown("---")
     st.markdown("🔧 **Internal Staff Access:** [Admin Panel](?admin=internal)")
