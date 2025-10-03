@@ -7,43 +7,211 @@ on:
       - completed
 
 jobs:
-  notify:
+  notify-success:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     
     steps:
-    - name: Success Notification
+    - name: Get workflow run details
+      id: get_run_details
       run: |
+        echo "commit_sha=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_OUTPUT
+        echo "commit_message=${{ github.event.workflow_run.head_commit.message }}" >> $GITHUB_OUTPUT
+        echo "author_name=${{ github.event.workflow_run.head_commit.author.name }}" >> $GITHUB_OUTPUT
+        echo "run_url=${{ github.event.workflow_run.html_url }}" >> $GITHUB_OUTPUT
+        echo "branch=${{ github.event.workflow_run.head_branch }}" >> $GITHUB_OUTPUT
+        
+    - name: Send Email Notification
+      if: env.EMAIL_NOTIFICATIONS == 'true'
+      run: |
+        echo "📧 Email notification would be sent here"
         echo "🎉 DEPLOYMENT SUCCESS!"
         echo "📅 Date: $(date)"
-        echo "🔗 Commit: ${{ github.event.workflow_run.head_sha }}"
-        echo "👤 Author: ${{ github.event.workflow_run.head_commit.author.name }}"
-        echo "📝 Message: ${{ github.event.workflow_run.head_commit.message }}"
+        echo "🔗 Commit: ${{ steps.get_run_details.outputs.commit_sha }}"
+        echo "👤 Author: ${{ steps.get_run_details.outputs.author_name }}"
+        echo "📝 Message: ${{ steps.get_run_details.outputs.commit_message }}"
         echo "✅ All tests passed"
         echo "🚀 Streamlit Cloud deployment triggered"
         echo "🌐 Your app should be live shortly!"
         
-        # You can add webhook notifications here
-        # Example: curl -X POST -H 'Content-type: application/json' \
-        # --data '{"text":"🎉 Deployment successful! Tests passed and app is live!"}' \
-        # YOUR_WEBHOOK_URL
+    - name: Send Slack Notification
+      if: env.SLACK_WEBHOOK_URL != ''
+      run: |
+        curl -X POST -H 'Content-type: application/json' \
+        --data '{
+          "text": "🎉 *Concierge.com Deployment Successful!*",
+          "blocks": [
+            {
+              "type": "header",
+              "text": {
+                "type": "plain_text",
+                "text": "🎉 Deployment Successful!"
+              }
+            },
+            {
+              "type": "section",
+              "fields": [
+                {
+                  "type": "mrkdwn",
+                  "text": "*Commit:*\n`${{ steps.get_run_details.outputs.commit_sha }}`"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Branch:*\n${{ steps.get_run_details.outputs.branch }}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Author:*\n${{ steps.get_run_details.outputs.author_name }}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Status:*\n✅ All tests passed"
+                }
+              ]
+            },
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "*Message:* ${{ steps.get_run_details.outputs.commit_message }}"
+              }
+            },
+            {
+              "type": "actions",
+              "elements": [
+                {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "View Deployment"
+                  },
+                  "url": "${{ steps.get_run_details.outputs.run_url }}",
+                  "style": "primary"
+                }
+              ]
+            }
+          ]
+        }' \
+        ${{ env.SLACK_WEBHOOK_URL }}
+        
+    - name: Send Discord Notification
+      if: env.DISCORD_WEBHOOK_URL != ''
+      run: |
+        curl -X POST -H 'Content-type: application/json' \
+        --data '{
+          "content": "🎉 **Concierge.com Deployment Successful!**",
+          "embeds": [
+            {
+              "title": "🚀 Deployment Complete",
+              "color": 65280,
+              "fields": [
+                {
+                  "name": "Commit",
+                  "value": "`${{ steps.get_run_details.outputs.commit_sha }}`",
+                  "inline": true
+                },
+                {
+                  "name": "Branch",
+                  "value": "${{ steps.get_run_details.outputs.branch }}",
+                  "inline": true
+                },
+                {
+                  "name": "Author",
+                  "value": "${{ steps.get_run_details.outputs.author_name }}",
+                  "inline": true
+                },
+                {
+                  "name": "Status",
+                  "value": "✅ All tests passed",
+                  "inline": true
+                },
+                {
+                  "name": "Message",
+                  "value": "${{ steps.get_run_details.outputs.commit_message }}"
+                }
+              ],
+              "footer": {
+                "text": "Concierge.com CI/CD Pipeline"
+              },
+              "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%S.000Z)'"
+            }
+          ]
+        }' \
+        ${{ env.DISCORD_WEBHOOK_URL }}
 
   notify-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     
     steps:
-    - name: Failure Notification
+    - name: Get workflow run details
+      id: get_run_details
+      run: |
+        echo "commit_sha=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_OUTPUT
+        echo "commit_message=${{ github.event.workflow_run.head_commit.message }}" >> $GITHUB_OUTPUT
+        echo "author_name=${{ github.event.workflow_run.head_commit.author.name }}" >> $GITHUB_OUTPUT
+        echo "run_url=${{ github.event.workflow_run.html_url }}" >> $GITHUB_OUTPUT
+        echo "branch=${{ github.event.workflow_run.head_branch }}" >> $GITHUB_OUTPUT
+        
+    - name: Send Failure Notification
       run: |
         echo "❌ DEPLOYMENT FAILED!"
         echo "📅 Date: $(date)"
-        echo "🔗 Commit: ${{ github.event.workflow_run.head_sha }}"
-        echo "👤 Author: ${{ github.event.workflow_run.head_commit.author.name }}"
-        echo "📝 Message: ${{ github.event.workflow_run.head_commit.message }}"
+        echo "🔗 Commit: ${{ steps.get_run_details.outputs.commit_sha }}"
+        echo "👤 Author: ${{ steps.get_run_details.outputs.author_name }}"
+        echo "📝 Message: ${{ steps.get_run_details.outputs.commit_message }}"
         echo "💥 Tests failed or deployment error occurred"
         echo "🔍 Check the GitHub Actions logs for details"
         
-        # You can add webhook notifications here
-        # Example: curl -X POST -H 'Content-type: application/json' \
-        # --data '{"text":"❌ Deployment failed! Check GitHub Actions."}' \
-        # YOUR_WEBHOOK_URL
+        # Send Slack notification for failure
+        if [ "$SLACK_WEBHOOK_URL" != "" ]; then
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{
+            "text": "❌ *Concierge.com Deployment Failed!*",
+            "blocks": [
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "❌ Deployment Failed!"
+                }
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Commit:*\n`${{ steps.get_run_details.outputs.commit_sha }}`"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Branch:*\n${{ steps.get_run_details.outputs.branch }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Author:*\n${{ steps.get_run_details.outputs.author_name }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Status:*\n❌ Tests failed"
+                  }
+                ]
+              },
+              {
+                "type": "actions",
+                "elements": [
+                  {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "View Logs"
+                    },
+                    "url": "${{ steps.get_run_details.outputs.run_url }}",
+                    "style": "danger"
+                  }
+                ]
+              }
+            ]
+          }' \
+          ${{ env.SLACK_WEBHOOK_URL }}
+        fi
