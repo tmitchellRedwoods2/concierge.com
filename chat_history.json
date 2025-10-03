@@ -1,21 +1,21 @@
 {
   "messages": [
     {
-      "id": "c567aeb6-af90-43e2-b218-c6806faa1a21",
+      "id": "29abf8c1-a346-4d7e-a060-30560f875a11",
       "sender": "user",
       "recipient": "concierge",
       "message": "Concierge message",
-      "timestamp": "2025-10-03T14:40:07.408795",
+      "timestamp": "2025-10-03T14:51:10.060083",
       "message_type": "user",
       "channel": "concierge",
       "read": false
     },
     {
-      "id": "093b8347-4d1b-41c8-a3db-1b26527e5272",
+      "id": "e39e0eaf-eb00-4333-bf67-cded3c509fe5",
       "sender": "user",
       "recipient": "support",
       "message": "Support message",
-      "timestamp": "2025-10-03T14:40:07.408878",
+      "timestamp": "2025-10-03T14:51:10.060165",
       "message_type": "user",
       "channel": "support",
       "read": false
@@ -24,7 +24,7 @@
   "conversations": {
     "concierge": [
       {
-        "id": "c567aeb6-af90-43e2-b218-c6806faa1a21",
+        "id": "29abf8c1-a346-4d7e-a060-30560f875a11",
         "sender": "user",
         "recipient": "concierge",
         "message": "Concierge message",

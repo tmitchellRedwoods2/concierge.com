@@ -167,6 +167,90 @@
       "refills_remaining": 3,
       "last_refill": null,
       "next_refill_due": "2024-02-15"
+    },
+    {
+      "id": "3ef7351d-d1bc-4a37-81e5-2efaa95f878d",
+      "name": "Test Medication",
+      "dosage": "10mg",
+      "frequency": "Once daily",
+      "quantity": 30,
+      "refill_date": "2024-02-01",
+      "pharmacy": "cvs",
+      "doctor": "Dr. Smith",
+      "status": "active",
+      "refills_remaining": 3,
+      "last_refill": null,
+      "next_refill_due": "2024-02-01"
+    },
+    {
+      "id": "eb70acb9-d054-4042-8cb7-c90ab4aaf62c",
+      "name": "Medication 1",
+      "dosage": "10mg",
+      "frequency": "Daily",
+      "quantity": 30,
+      "refill_date": "2024-02-01",
+      "pharmacy": "cvs",
+      "doctor": "Dr. Smith",
+      "status": "active",
+      "refills_remaining": 3,
+      "last_refill": null,
+      "next_refill_due": "2024-02-01"
+    },
+    {
+      "id": "c288295c-34fe-4453-b606-736e57548cbd",
+      "name": "Test Med",
+      "dosage": "10mg",
+      "frequency": "Daily",
+      "quantity": 30,
+      "refill_date": "2025-10-08",
+      "pharmacy": "cvs",
+      "doctor": "Dr. Smith",
+      "status": "active",
+      "refills_remaining": 3,
+      "last_refill": null,
+      "next_refill_due": "2025-10-08"
+    },
+    {
+      "id": "84eb5e14-ee8e-4d01-8bed-134809bef853",
+      "name": "Test Medication",
+      "dosage": "10mg",
+      "frequency": "Daily",
+      "quantity": 30,
+      "refill_date": "2024-02-01",
+      "pharmacy": "cvs",
+      "doctor": "Dr. Smith",
+      "status": "active",
+      "refills_remaining": 3,
+      "last_refill": null,
+      "next_refill_due": "2024-02-01"
+    },
+    {
+      "id": "301a4dda-3827-4c99-9741-aa04d15ad442",
+      "name": "Test Medication",
+      "dosage": "10mg",
+      "frequency": "Daily",
+      "quantity": 30,
+      "refill_date": "2024-02-01",
+      "pharmacy": "cvs",
+      "doctor": "Dr. Smith",
+      "status": "active",
+      "refills_remaining": 3,
+      "last_refill": null,
+      "next_refill_due": "2024-02-01"
+    },
+    {
+      "id": "9ca6fea7-e7b8-45ca-8b02-fd7920cf7100",
+      "name": "Structure Test",
+      "dosage": "5mg",
+      "frequency": "Twice daily",
+      "quantity": 60,
+      "refill_date": "2024-02-15",
+      "pharmacy": "fullscript",
+      "doctor": "Dr. Test",
+      "status": "active",
+      "refills_remaining": 3,
+      "last_refill": null,
+      "next_refill_due": "2024-02-15"
     }
   ],
   "refill_reminders": [
@@ -200,6 +284,22 @@
       "pharmacy": "walgreens",
       "request_date": "2025-10-03 14:40:07",
       "estimated_ready": "2025-10-03 16:40",
+      "status": "pending"
+    },
+    {
+      "id": "840cf2f6-4cb6-428a-9585-fb579c540131",
+      "prescription_id": "84eb5e14-ee8e-4d01-8bed-134809bef853",
+      "pharmacy": "cvs",
+      "request_date": "2025-10-03 14:51:10",
+      "estimated_ready": "2025-10-03 16:51",
+      "status": "pending"
+    },
+    {
+      "id": "76143c9e-b12b-4457-afa6-7deba2590bc3",
+      "prescription_id": "301a4dda-3827-4c99-9741-aa04d15ad442",
+      "pharmacy": "walgreens",
+      "request_date": "2025-10-03 14:51:10",
+      "estimated_ready": "2025-10-03 16:51",
       "status": "pending"
     }
   ]

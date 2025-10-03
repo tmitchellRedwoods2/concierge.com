@@ -19,6 +19,10 @@ from src.managers.client_intake import ClientIntakeManager
 from src.managers.prescription import PrescriptionManager
 from src.managers.investment import InvestmentManager
 from src.managers.expense import ExpenseManager
+from src.managers.insurance import InsuranceManager
+from src.managers.legal import LegalManager
+from src.managers.tax import TaxManager
+from src.managers.travel import TravelManager
 
 # Set page configuration
 st.set_page_config(**PAGE_CONFIG)
@@ -34,6 +38,10 @@ intake_manager = ClientIntakeManager()
 prescription_manager = PrescriptionManager()
 investment_manager = InvestmentManager()
 expense_manager = ExpenseManager()
+insurance_manager = InsuranceManager()
+legal_manager = LegalManager()
+tax_manager = TaxManager()
+travel_manager = TravelManager()
 
 # Main App Logic
 if not st.session_state.user_logged_in and not st.session_state.admin_logged_in:
@@ -137,9 +145,9 @@ def render_user_dashboard():
     # Service tabs
     st.subheader("🔧 Services")
     
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-        "💰 Expenses", "📈 Investments", "🏥 Health", 
-        "💬 Messages", "🤖 AI Agents", "⚙️ Settings"
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs([
+        "💰 Expenses", "📈 Investments", "🏥 Health", "🛡️ Insurance", "⚖️ Legal",
+        "📊 Tax", "✈️ Travel", "💬 Messages", "🤖 AI Agents", "⚙️ Settings"
     ])
     
     with tab1:
@@ -152,12 +160,24 @@ def render_user_dashboard():
         render_health_tab()
     
     with tab4:
-        render_messaging_tab()
+        render_insurance_tab()
     
     with tab5:
-        render_ai_agents_tab()
+        render_legal_tab()
     
     with tab6:
+        render_tax_tab()
+    
+    with tab7:
+        render_travel_tab()
+    
+    with tab8:
+        render_messaging_tab()
+    
+    with tab9:
+        render_ai_agents_tab()
+    
+    with tab10:
         render_settings_tab()
 
 
@@ -330,6 +350,110 @@ def render_ai_agents_tab():
             st.write(f"**{category.replace('_', ' ').title()}:**")
             for insight in insights:
                 st.write(f"• {insight}")
+
+
+def render_insurance_tab():
+    """Render insurance management tab"""
+    st.subheader("🛡️ Insurance Management")
+    
+    # Insurance summary
+    policies = insurance_manager.get_policies()
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Active Policies", len(policies))
+    with col2:
+        st.metric("Insurance Companies", len(insurance_manager.get_available_companies()))
+    
+    # Available insurance companies
+    st.subheader("🏢 Available Insurance Companies")
+    companies = insurance_manager.get_available_companies()
+    
+    for company_key in companies:
+        company_info = insurance_manager.get_company_info(company_key)
+        with st.expander(f"🛡️ {company_info['name']}"):
+            st.write(f"**Website:** {company_info['website']}")
+            st.write(f"**Features:** {', '.join(company_info['features'])}")
+            st.write(f"**Rating:** {company_info['rating']}/5")
+            st.write(f"**Contact:** {company_info['contact']}")
+
+
+def render_legal_tab():
+    """Render legal management tab"""
+    st.subheader("⚖️ Legal Management")
+    
+    # Legal summary
+    cases = legal_manager.get_cases()
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Active Cases", len(cases))
+    with col2:
+        st.metric("Law Firms", len(legal_manager.get_available_firms()))
+    
+    # Available law firms
+    st.subheader("🏛️ Available Law Firms")
+    firms = legal_manager.get_available_firms()
+    
+    for firm_key in firms:
+        firm_info = legal_manager.get_firm_info(firm_key)
+        with st.expander(f"⚖️ {firm_info['name']}"):
+            st.write(f"**Website:** {firm_info['website']}")
+            st.write(f"**Specialties:** {', '.join(firm_info['specialties'])}")
+            st.write(f"**Rating:** {firm_info['rating']}/5")
+            st.write(f"**Contact:** {firm_info['contact']}")
+
+
+def render_tax_tab():
+    """Render tax management tab"""
+    st.subheader("📊 Tax Management")
+    
+    # Tax summary
+    documents = tax_manager.get_documents()
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Tax Documents", len(documents))
+    with col2:
+        st.metric("Tax Providers", len(tax_manager.get_available_providers()))
+    
+    # Available tax providers
+    st.subheader("🏢 Available Tax Providers")
+    providers = tax_manager.get_available_providers()
+    
+    for provider_key in providers:
+        provider_info = tax_manager.get_provider_info(provider_key)
+        with st.expander(f"📊 {provider_info['name']}"):
+            st.write(f"**Website:** {provider_info['website']}")
+            st.write(f"**Features:** {', '.join(provider_info['features'])}")
+            st.write(f"**Rating:** {provider_info['rating']}/5")
+            st.write(f"**Support:** {provider_info['customer_support']}")
+
+
+def render_travel_tab():
+    """Render travel management tab"""
+    st.subheader("✈️ Travel Management")
+    
+    # Travel summary
+    trips = travel_manager.get_trips()
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Travel Trips", len(trips))
+    with col2:
+        st.metric("Travel Services", len(travel_manager.get_available_services()))
+    
+    # Available travel services
+    st.subheader("🌐 Available Travel Services")
+    services = travel_manager.get_available_services()
+    
+    for service_key in services:
+        service_info = travel_manager.get_service_info(service_key)
+        with st.expander(f"✈️ {service_info['name']}"):
+            st.write(f"**Website:** {service_info['website']}")
+            st.write(f"**Features:** {', '.join(service_info['features'])}")
+            st.write(f"**Rating:** {service_info['rating']}/5")
+            st.write(f"**Support:** {service_info['customer_support']}")
 
 
 def render_settings_tab():

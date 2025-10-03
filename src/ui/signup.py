@@ -52,14 +52,14 @@ def render_account_info_step(intake_manager):
     
     col1, col2 = st.columns(2)
     with col1:
-        username = st.text_input("Choose Username", value=st.session_state.signup_data.get('username', ''), key="signup_username")
-        email = st.text_input("Email Address", value=st.session_state.signup_data.get('email', ''), key="signup_email")
-        password = st.text_input("Create Password", type="password", value=st.session_state.signup_data.get('password', ''), key="signup_password")
+        username = st.text_input("Choose Username", value=st.session_state.signup_data.get('username', ''), key="signup_username_step1")
+        email = st.text_input("Email Address", value=st.session_state.signup_data.get('email', ''), key="signup_email_step1")
+        password = st.text_input("Create Password", type="password", value=st.session_state.signup_data.get('password', ''), key="signup_password_step1")
     
     with col2:
-        first_name = st.text_input("First Name", value=st.session_state.signup_data.get('first_name', ''), key="signup_firstname")
-        last_name = st.text_input("Last Name", value=st.session_state.signup_data.get('last_name', ''), key="signup_lastname")
-        confirm_password = st.text_input("Confirm Password", type="password", key="signup_confirm")
+        first_name = st.text_input("First Name", value=st.session_state.signup_data.get('first_name', ''), key="signup_firstname_step1")
+        last_name = st.text_input("Last Name", value=st.session_state.signup_data.get('last_name', ''), key="signup_lastname_step1")
+        confirm_password = st.text_input("Confirm Password", type="password", key="signup_confirm_step1")
     
     if st.button("Next →", use_container_width=True, type="primary"):
         if all([username, email, password, first_name, last_name]):
@@ -90,14 +90,14 @@ def render_financial_profile_step(intake_manager):
             min_value=0, 
             step=10000, 
             value=st.session_state.signup_data.get('net_worth', 100000),
-            key="signup_net_worth"
+            key="signup_net_worth_step2"
         )
         annual_income = st.number_input(
             "Annual Income ($)", 
             min_value=0, 
             step=10000, 
             value=st.session_state.signup_data.get('annual_income', 50000),
-            key="signup_annual_income"
+            key="signup_annual_income_step2"
         )
     
     with col2:
@@ -107,14 +107,14 @@ def render_financial_profile_step(intake_manager):
             index=["Employed", "Self-Employed", "Retired", "Student", "Unemployed", "Other"].index(
                 st.session_state.signup_data.get('employment_status', 'Employed')
             ),
-            key="signup_employment"
+            key="signup_employment_step2"
         )
         family_size = st.number_input(
             "Family Size", 
             min_value=1, 
             max_value=20, 
             value=st.session_state.signup_data.get('family_size', 1),
-            key="signup_family_size"
+            key="signup_family_size_step2"
         )
     
     col1, col2 = st.columns(2)
@@ -156,21 +156,21 @@ def render_goals_step(intake_manager):
             "Personal Development"
         ],
         default=st.session_state.signup_data.get('goals', []),
-        key="signup_goals"
+        key="signup_goals_step3"
     )
     
     st.text_area(
         "Additional goals or specific needs:",
         value=st.session_state.signup_data.get('additional_goals', ''),
         height=100,
-        key="signup_additional_goals"
+        key="signup_additional_goals_step3"
     )
     
     priority_level = st.select_slider(
         "How important is having a dedicated concierge service?",
         options=["Low", "Medium", "High", "Critical"],
         value=st.session_state.signup_data.get('priority_level', 'Medium'),
-        key="signup_priority"
+        key="signup_priority_step3"
     )
     
     col1, col2 = st.columns(2)
@@ -212,7 +212,7 @@ def render_service_selection_step(intake_manager):
         "Select services (choose all that apply):",
         available_services,
         default=st.session_state.signup_data.get('selected_services', []),
-        key="signup_services"
+        key="signup_services_step4"
     )
     
     # Show service descriptions
