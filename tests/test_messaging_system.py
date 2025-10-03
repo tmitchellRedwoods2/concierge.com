@@ -3,9 +3,11 @@ Unit tests for MessagingSystem class
 """
 import pytest
 import sys
+import os
 sys.path.append('.')
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from app import MessagingSystem
+from src.managers.messaging import MessagingSystem
 
 
 class TestMessagingSystem:

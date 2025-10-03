@@ -3,9 +3,11 @@ Unit tests for ExpenseManager class
 """
 import pytest
 import sys
+import os
 sys.path.append('.')
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from app import ExpenseManager
+from src.managers.expense import ExpenseManager
 
 
 class TestExpenseManager:

@@ -3,9 +3,11 @@ Unit tests for AIAgentSystem class
 """
 import pytest
 import sys
+import os
 sys.path.append('.')
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from app import AIAgentSystem
+from src.managers.ai_agent import AIAgentSystem
 
 
 class TestAIAgentSystem:

@@ -9,8 +9,9 @@ from datetime import datetime
 from unittest.mock import patch, mock_open
 import sys
 sys.path.append('.')
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from app import ClientIntakeManager
+from src.managers.client_intake import ClientIntakeManager
 
 
 class TestClientIntakeManager:
