@@ -1,0 +1,49 @@
+name: Deployment Notifications
+
+on:
+  workflow_run:
+    workflows: ["CI/CD Pipeline"]
+    types:
+      - completed
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    
+    steps:
+    - name: Success Notification
+      run: |
+        echo "🎉 DEPLOYMENT SUCCESS!"
+        echo "📅 Date: $(date)"
+        echo "🔗 Commit: ${{ github.event.workflow_run.head_sha }}"
+        echo "👤 Author: ${{ github.event.workflow_run.head_commit.author.name }}"
+        echo "📝 Message: ${{ github.event.workflow_run.head_commit.message }}"
+        echo "✅ All tests passed"
+        echo "🚀 Streamlit Cloud deployment triggered"
+        echo "🌐 Your app should be live shortly!"
+        
+        # You can add webhook notifications here
+        # Example: curl -X POST -H 'Content-type: application/json' \
+        # --data '{"text":"🎉 Deployment successful! Tests passed and app is live!"}' \
+        # YOUR_WEBHOOK_URL
+
+  notify-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    
+    steps:
+    - name: Failure Notification
+      run: |
+        echo "❌ DEPLOYMENT FAILED!"
+        echo "📅 Date: $(date)"
+        echo "🔗 Commit: ${{ github.event.workflow_run.head_sha }}"
+        echo "👤 Author: ${{ github.event.workflow_run.head_commit.author.name }}"
+        echo "📝 Message: ${{ github.event.workflow_run.head_commit.message }}"
+        echo "💥 Tests failed or deployment error occurred"
+        echo "🔍 Check the GitHub Actions logs for details"
+        
+        # You can add webhook notifications here
+        # Example: curl -X POST -H 'Content-type: application/json' \
+        # --data '{"text":"❌ Deployment failed! Check GitHub Actions."}' \
+        # YOUR_WEBHOOK_URL

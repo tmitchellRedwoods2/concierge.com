@@ -1,0 +1,45 @@
+name: Test on Push
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-test.txt
+    
+    - name: Run tests
+      run: |
+        python -m pytest tests/ -v --tb=short
+    
+    - name: Test notification
+      if: success()
+      run: |
+        echo "✅ All tests passed successfully!"
+        echo "📊 Test results: PASSED"
+        echo "🚀 Ready for deployment"
+    
+    - name: Failure notification
+      if: failure()
+      run: |
+        echo "❌ Tests failed!"
+        echo "📊 Test results: FAILED"
+        echo "🔍 Check the logs above for details"
+        exit 1
