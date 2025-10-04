@@ -143,6 +143,150 @@
       "investment_type": "stock",
       "purchase_date": "2025-10-03",
       "status": "active"
+    },
+    {
+      "id": 13,
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "shares": 10,
+      "price": 150.0,
+      "current_value": 1500.0,
+      "account_id": 21,
+      "investment_type": "stock",
+      "purchase_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 14,
+      "symbol": "VTI",
+      "name": "Vanguard Total Stock Market ETF",
+      "shares": 50,
+      "price": 200.0,
+      "current_value": 10000.0,
+      "account_id": 22,
+      "investment_type": "etf",
+      "purchase_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 15,
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "shares": 10,
+      "price": 150.0,
+      "current_value": 1500.0,
+      "account_id": 23,
+      "investment_type": "stock",
+      "purchase_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 16,
+      "symbol": "MSFT",
+      "name": "Microsoft Corp.",
+      "shares": 5,
+      "price": 300.0,
+      "current_value": 1500.0,
+      "account_id": 24,
+      "investment_type": "stock",
+      "purchase_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 17,
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "shares": 10,
+      "price": 150.0,
+      "current_value": 1500.0,
+      "account_id": 27,
+      "investment_type": "stock",
+      "purchase_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 18,
+      "symbol": "VTI",
+      "name": "Vanguard Total Stock Market ETF",
+      "shares": 50,
+      "price": 200.0,
+      "current_value": 10000.0,
+      "account_id": 28,
+      "investment_type": "etf",
+      "purchase_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 19,
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "shares": 10,
+      "price": 150.0,
+      "current_value": 1500.0,
+      "account_id": 29,
+      "investment_type": "stock",
+      "purchase_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 20,
+      "symbol": "MSFT",
+      "name": "Microsoft Corp.",
+      "shares": 5,
+      "price": 300.0,
+      "current_value": 1500.0,
+      "account_id": 30,
+      "investment_type": "stock",
+      "purchase_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 21,
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "shares": 10,
+      "price": 150.0,
+      "current_value": 1500.0,
+      "account_id": 33,
+      "investment_type": "stock",
+      "purchase_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 22,
+      "symbol": "VTI",
+      "name": "Vanguard Total Stock Market ETF",
+      "shares": 50,
+      "price": 200.0,
+      "current_value": 10000.0,
+      "account_id": 34,
+      "investment_type": "etf",
+      "purchase_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 23,
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "shares": 10,
+      "price": 150.0,
+      "current_value": 1500.0,
+      "account_id": 35,
+      "investment_type": "stock",
+      "purchase_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 24,
+      "symbol": "MSFT",
+      "name": "Microsoft Corp.",
+      "shares": 5,
+      "price": 300.0,
+      "current_value": 1500.0,
+      "account_id": 36,
+      "investment_type": "stock",
+      "purchase_date": "2025-10-03",
+      "status": "active"
     }
   ],
   "accounts": [
@@ -301,6 +445,168 @@
     },
     {
       "id": 18,
+      "broker": "fidelity",
+      "account_name": "Account 2",
+      "account_type": "ira",
+      "balance": 3000,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 19,
+      "broker": "charles_schwab",
+      "account_name": "My Brokerage",
+      "account_type": "individual",
+      "balance": 10000,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 20,
+      "broker": "fidelity",
+      "account_name": "Retirement Account",
+      "account_type": "ira",
+      "balance": 0,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 21,
+      "broker": "charles_schwab",
+      "account_name": "Test Account",
+      "account_type": "individual",
+      "balance": 0,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 22,
+      "broker": "vanguard",
+      "account_name": "ETF Account",
+      "account_type": "individual",
+      "balance": 0,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 23,
+      "broker": "charles_schwab",
+      "account_name": "Account 1",
+      "account_type": "individual",
+      "balance": 5000,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 24,
+      "broker": "fidelity",
+      "account_name": "Account 2",
+      "account_type": "ira",
+      "balance": 3000,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 25,
+      "broker": "charles_schwab",
+      "account_name": "My Brokerage",
+      "account_type": "individual",
+      "balance": 10000,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 26,
+      "broker": "fidelity",
+      "account_name": "Retirement Account",
+      "account_type": "ira",
+      "balance": 0,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 27,
+      "broker": "charles_schwab",
+      "account_name": "Test Account",
+      "account_type": "individual",
+      "balance": 0,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 28,
+      "broker": "vanguard",
+      "account_name": "ETF Account",
+      "account_type": "individual",
+      "balance": 0,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 29,
+      "broker": "charles_schwab",
+      "account_name": "Account 1",
+      "account_type": "individual",
+      "balance": 5000,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 30,
+      "broker": "fidelity",
+      "account_name": "Account 2",
+      "account_type": "ira",
+      "balance": 3000,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 31,
+      "broker": "charles_schwab",
+      "account_name": "My Brokerage",
+      "account_type": "individual",
+      "balance": 10000,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 32,
+      "broker": "fidelity",
+      "account_name": "Retirement Account",
+      "account_type": "ira",
+      "balance": 0,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 33,
+      "broker": "charles_schwab",
+      "account_name": "Test Account",
+      "account_type": "individual",
+      "balance": 0,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 34,
+      "broker": "vanguard",
+      "account_name": "ETF Account",
+      "account_type": "individual",
+      "balance": 0,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 35,
+      "broker": "charles_schwab",
+      "account_name": "Account 1",
+      "account_type": "individual",
+      "balance": 5000,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 36,
       "broker": "fidelity",
       "account_name": "Account 2",
       "account_type": "ira",

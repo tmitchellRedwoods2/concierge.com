@@ -1,7 +1,7 @@
 {
   "user_sessions": [],
   "system_metrics": {
-    "total_users": 15,
+    "total_users": 30,
     "active_sessions": 0,
     "messages_sent": 0,
     "prescriptions_managed": 0,
