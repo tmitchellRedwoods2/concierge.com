@@ -43,20 +43,6 @@ legal_manager = LegalManager()
 tax_manager = TaxManager()
 travel_manager = TravelManager()
 
-# Main App Logic
-if not st.session_state.user_logged_in and not st.session_state.admin_logged_in:
-    # Login/Signup Page
-    render_login_page()
-    
-elif st.session_state.admin_logged_in:
-    # Admin Dashboard
-    render_admin_dashboard()
-    
-else:
-    # User Dashboard
-    render_user_dashboard()
-
-
 def render_admin_dashboard():
     """Render admin dashboard"""
     from src.ui.auth import logout_admin
@@ -486,6 +472,20 @@ def render_settings_tab():
                 st.session_state.user_plan = 'elite'
                 st.success("Upgraded to Elite!")
                 st.rerun()
+
+
+# Main App Logic
+if not st.session_state.user_logged_in and not st.session_state.admin_logged_in:
+    # Login/Signup Page
+    render_login_page()
+    
+elif st.session_state.admin_logged_in:
+    # Admin Dashboard
+    render_admin_dashboard()
+    
+else:
+    # User Dashboard
+    render_user_dashboard()
 
 
 if __name__ == "__main__":
