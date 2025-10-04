@@ -299,6 +299,56 @@
       "app_source": null,
       "created_date": "2025-10-03",
       "status": "active"
+    },
+    {
+      "id": 31,
+      "category": "food",
+      "amount": 150.0,
+      "description": "Groceries",
+      "date": "2024-01-01",
+      "app_source": null,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 32,
+      "category": "transportation",
+      "amount": 50.0,
+      "description": "Gas",
+      "date": "2024-01-01",
+      "app_source": "ynab",
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 33,
+      "category": "food",
+      "amount": 150.0,
+      "description": "Groceries",
+      "date": "2024-01-01",
+      "app_source": null,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 34,
+      "category": "transportation",
+      "amount": 50.0,
+      "description": "Gas",
+      "date": "2024-01-02",
+      "app_source": null,
+      "created_date": "2025-10-03",
+      "status": "active"
+    },
+    {
+      "id": 35,
+      "category": "food",
+      "amount": 75.0,
+      "description": "Restaurant",
+      "date": "2024-01-03",
+      "app_source": null,
+      "created_date": "2025-10-03",
+      "status": "active"
     }
   ],
   "budgets": []
