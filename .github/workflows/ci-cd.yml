@@ -33,9 +33,21 @@ jobs:
         pip install -r requirements-test.txt
         pip install -r requirements-selenium.txt
     
+    - name: Install Chrome for Selenium
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y chromium-browser chromium-chromedriver
+    
     - name: Run unit tests
       run: |
         python -m pytest tests/test_*.py -v --cov=. --cov-report=xml
+    
+    - name: Run Selenium tests against deployed app
+      run: |
+        # Wait a moment for any recent deployments
+        sleep 5
+        # Run smoke tests against the deployed Streamlit Cloud app
+        python run_selenium_tests.py --smoke-only --url "https://concierge-com.streamlit.app"
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
